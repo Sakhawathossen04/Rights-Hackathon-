@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="bn" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPOC-Vault | Independent Police Oversight Commission</title>
+    <!-- Tailwind CSS with Dark Mode Class Strategy -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            950: '#060d1d',
+                            900: '#0b192c',
+                            800: '#1e3e62',
+                            700: '#2b507d',
+                        },
+                        accent: {
+                            crimson: '#e63946',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            cyan: '#06b6d4',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', '"Hind Siliguri"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                        bengali: ['"Hind Siliguri"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0b192c;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2b507d;
+        }
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .animate-pulse-subtle {
+            animation: pulse-subtle 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-navy-950 text-slate-800 dark:text-slate-100 font-sans min-h-screen flex flex-col transition-colors duration-200 selection:bg-cyan-500 selection:text-white dark:selection:text-navy-950">
+
+    <!-- Top Sovereign Bar -->
+    <div class="bg-slate-200/80 dark:bg-navy-900 border-b border-slate-300 dark:border-slate-800 text-xs px-4 py-2 flex flex-wrap justify-between items-center text-slate-600 dark:text-slate-400 transition-colors">
+        <div class="flex items-center gap-3">
+            <span class="inline-flex items-center gap-1.5 font-medium text-emerald-700 dark:text-emerald-400">
+                <span class="h-2 w-2 rounded-full bg-emerald-600 dark:bg-emerald-400 animate-ping"></span>
+                গণপ্রজাতন্ত্রী বাংলাদেশ | সাংবিধানিক স্বাধীন সংস্থা
+            </span>
+            <span class="hidden md:inline text-slate-400 dark:text-slate-600">|</span>
+            <span class="hidden md:inline text-slate-700 dark:text-slate-300 font-medium">SAPRAN Rights Hackathon 2026</span>
+            <span class="hidden lg:inline bg-slate-300/80 dark:bg-navy-800 text-cyan-800 dark:text-cyan-300 px-2 py-0.5 rounded text-[11px] font-mono font-bold">Team: Checks and Balances</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="flex items-center gap-1.5 text-amber-700 dark:text-amber-400 font-medium">
+                <i class="fa-solid fa-phone-volume"></i> টোল-ফ্রি হটলাইন: <strong class="text-slate-900 dark:text-white">৩৩৩</strong> / <strong class="text-slate-900 dark:text-white">৯৯৯</strong> (Press 7)
+            </span>
+            <button onclick="openSmsSimulator()" class="bg-white dark:bg-navy-800 hover:bg-slate-50 dark:hover:bg-navy-700 text-cyan-700 dark:text-cyan-400 px-2.5 py-1 rounded border border-cyan-500/40 dark:border-cyan-800 text-[11px] flex items-center gap-1.5 shadow-sm transition">
+                <i class="fa-solid fa-mobile-screen"></i> ২G SMS সিমুলেটর
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Header -->
+    <header class="bg-white/95 dark:bg-navy-900/90 backdrop-blur sticky top-0 z-40 border-b border-slate-200 dark:border-slate-800 shadow-sm dark:shadow-xl transition-colors">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="h-12 w-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-700 p-0.5 flex items-center justify-center shadow-lg shadow-cyan-500/20 cursor-pointer" onclick="switchTab('citizen')">
+                    <div class="bg-white dark:bg-navy-950 h-full w-full rounded-[10px] flex items-center justify-center transition-colors">
+                        <i class="fa-solid fa-scale-balanced text-xl text-cyan-600 dark:text-cyan-400"></i>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+                            IPOC <span class="text-cyan-700 dark:text-cyan-400 text-xs font-semibold tracking-normal border border-cyan-500/40 bg-cyan-50 dark:bg-cyan-950/60 px-2 py-0.5 rounded-full">VAULT v2.6</span>
+                        </h1>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 font-bengali">স্বাধীন পুলিশ পর্যবেক্ষণ কমিশন (Independent Police Oversight Commission)</p>
+                </div>
+            </div>
+
+            <!-- Role / Portal Tabs -->
+            <nav class="hidden md:flex items-center gap-1 bg-slate-100 dark:bg-navy-950 p-1.5 rounded-xl border border-slate-200 dark:border-slate-800 transition-colors">
+                <button onclick="switchTab('citizen')" id="nav-citizen" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition bg-cyan-600 dark:bg-cyan-500 text-white dark:text-navy-950 shadow-sm">
+                    <i class="fa-solid fa-user-shield"></i> নাগরিক অভিযোগ (Intake)
+                </button>
+                <button onclick="switchTab('vault')" id="nav-vault" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-navy-900 transition">
+                    <i class="fa-solid fa-vault"></i> ক্রিপ্টো ভল্ট ও ট্যাম্পার টেস্ট
+                </button>
+                <button onclick="switchTab('triage')" id="nav-triage" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-navy-900 transition relative">
+                    <i class="fa-solid fa-list-check"></i> ১৪-দিনের ট্রায়াজ ডেস্ক
+                    <span id="badge-triage-count" class="bg-accent-crimson text-white text-[10px] px-1.5 py-0.2 rounded-full font-bold">৩</span>
+                </button>
+                <button onclick="switchTab('dossier')" id="nav-dossier" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-navy-900 transition">
+                    <i class="fa-solid fa-gavel"></i> স্পেশাল ট্রাইব্যুনাল ডসিয়ার
+                </button>
+                <button onclick="switchTab('transparency')" id="nav-transparency" class="tab-btn px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-navy-900 transition">
+                    <i class="fa-solid fa-chart-line"></i> পাবলিক ট্রান্সপারেন্সি
+                </button>
+            </nav>
+
+            <!-- Mode Selector / Theme Switcher -->
+            <div class="flex items-center gap-2.5">
+                <!-- Theme Switcher Button -->
+                <button onclick="toggleTheme()" id="themeToggleBtn" title="লাইট ও ডার্ক মোড পরিবর্তন করুন" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-xs font-semibold transition bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300 dark:bg-navy-800 dark:hover:bg-navy-700 dark:text-cyan-300 dark:border-slate-700 shadow-sm">
+                    <i id="themeIcon" class="fa-solid fa-moon text-slate-600 dark:text-amber-400"></i>
+                    <span id="themeText" class="font-medium">ডার্ক মোড</span>
+                </button>
+
+                <div class="h-8 w-px bg-slate-300 dark:bg-slate-800 hidden sm:block"></div>
+
+                <button onclick="toggleUPDCMode()" id="btn-updc-mode" class="text-xs bg-amber-50 hover:bg-amber-100 dark:bg-navy-800 dark:hover:bg-navy-700 text-amber-800 dark:text-amber-300 border border-amber-500/50 dark:border-amber-600/50 px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm transition">
+                    <i class="fa-solid fa-building-flag"></i> <span id="updc-btn-text">ইউডিসি মোড</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Strip -->
+        <div class="md:hidden flex overflow-x-auto gap-2 px-4 py-2 bg-slate-50 dark:bg-navy-950 border-t border-slate-200 dark:border-slate-800 text-xs custom-scrollbar">
+            <button onclick="switchTab('citizen')" class="whitespace-nowrap px-3 py-1.5 rounded-md bg-cyan-600 dark:bg-cyan-500 text-white dark:text-navy-950 font-semibold">অভিযোগ</button>
+            <button onclick="switchTab('vault')" class="whitespace-nowrap px-3 py-1.5 rounded-md bg-slate-200 dark:bg-navy-800 text-slate-700 dark:text-slate-200">ক্রিপ্টো ভল্ট</button>
+            <button onclick="switchTab('triage')" class="whitespace-nowrap px-3 py-1.5 rounded-md bg-slate-200 dark:bg-navy-800 text-slate-700 dark:text-slate-200">ট্রায়াজ ডেস্ক</button>
+            <button onclick="switchTab('dossier')" class="whitespace-nowrap px-3 py-1.5 rounded-md bg-slate-200 dark:bg-navy-800 text-slate-700 dark:text-slate-200">আদালত ডসিয়ার</button>
+            <button onclick="switchTab('transparency')" class="whitespace-nowrap px-3 py-1.5 rounded-md bg-slate-200 dark:bg-navy-800 text-slate-700 dark:text-slate-200">ট্রান্সপারেন্সি</button>
+        </div>
+    </header>
+
+    <!-- UPDC Alert Banner (Toggled by UPDC Mode) -->
+    <div id="updc-banner" class="hidden bg-amber-100 dark:bg-gradient-to-r dark:from-amber-900/40 dark:via-amber-800/30 dark:to-amber-900/40 border-b border-amber-300 dark:border-amber-600/40 py-2.5 px-4 text-center text-xs text-amber-900 dark:text-amber-200 transition-colors">
+        <div class="max-w-7xl mx-auto flex items-center justify-center gap-2">
+            <i class="fa-solid fa-id-card-clip text-amber-700 dark:text-amber-400"></i>
+            <span><strong>ইউনিয়ন ডিজিটাল সেন্টার (UPDC) মোড সক্রিয়:</strong> গ্রামীণ নাগরিকের পক্ষে এনক্রিপ্টেড অভিযোগ দাখিল হচ্ছে। ডিজিটাল সেন্টার উদ্যোক্তা আইডি: <code class="font-mono bg-white dark:bg-navy-950 px-2 py-0.5 rounded text-amber-700 dark:text-amber-300 font-bold border border-amber-300 dark:border-slate-800">UPDC-CTG-COM-412</code></span>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- ============================================================== -->
+        <!-- TAB 1: CITIZEN INTAKE MODULE                                   -->
+        <!-- ============================================================== -->
+        <section id="view-citizen" class="tab-view block space-y-8">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-2xl bg-white dark:bg-gradient-to-r dark:from-navy-900 dark:via-navy-800 dark:to-navy-900 border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-md dark:shadow-2xl transition-colors">
+                <div class="absolute -right-10 -bottom-10 opacity-5 dark:opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-shield-halved text-[220px]"></i>
+                </div>
+                <div class="max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 dark:bg-cyan-950/80 border border-cyan-500/30 text-cyan-800 dark:text-cyan-300 text-xs font-semibold mb-4">
+                        <i class="fa-solid fa-user-lock"></i> ১০০% স্বাধীন বেসামরিক তদন্ত | কোন পুলিশ কর্মকর্তা হস্তক্ষেপ করতে পারবে না
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-snug">
+                        আইনশৃঙ্খলা বাহিনীর ক্ষমতার অপব্যবহার ও নির্যাতনের বিরুদ্ধে নিরপেক্ষ অভিযোগ দাখিল
+                    </h2>
+                    <p class="mt-2 text-sm text-slate-600 dark:text-slate-300 font-bengali leading-relaxed">
+                        থানা মামলা না নিলেও আপনার কোনো বাধা নেই। এখানে জমা দেওয়া প্রতিটি প্রমাণ <strong>SHA-256 ক্রিপ্টোগ্রাফিক হ্যাশ</strong> দ্বারা সংরক্ষিত হয়, যা দেশের যেকোনো আদালত বা স্পেশাল ট্রাইব্যুনালে অপরিবর্তনীয় প্রামাণ্য দলিল হিসেবে গণ্য হবে।
+                    </p>
+                    <div class="mt-6 flex flex-wrap gap-4 text-xs font-medium text-slate-600 dark:text-slate-400">
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600 dark:text-emerald-400"></i> ১৫ মিনিটে ট্র্যাকিং SMS</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600 dark:text-emerald-400"></i> ১৪ দিনের মধ্যে তদন্ত সিদ্ধান্ত</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600 dark:text-emerald-400"></i> সাক্ষীর পরিচয় পূর্ণ গোপনীয়তা</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-check text-emerald-600 dark:text-emerald-400"></i> ৪৮ ঘণ্টায় জরুরি ভিকটিম চিকিৎসা তহবিল</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Complaint Form & Quick Status Checker Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left 2 Cols: Interactive Intake Form -->
+                <div class="lg:col-span-2 bg-white dark:bg-navy-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm dark:shadow-xl backdrop-blur transition-colors">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800 mb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                <i class="fa-solid fa-file-pen text-cyan-600 dark:text-cyan-400"></i> অভিযোগ ফর্ম (Civilian Incident Intake)
+                            </h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">সততার সাথে সত্য বিবরণ দিন। ভুয়া অভিযোগ স্বয়ংক্রিয়ভাবে ট্রায়াজ ডেস্কে বাতিল হবে।</p>
+                        </div>
+                        <span class="text-xs font-mono bg-slate-100 dark:bg-navy-950 px-2.5 py-1 rounded border border-slate-300 dark:border-slate-800 text-slate-600 dark:text-slate-400">
+                            STEP <span id="form-step-num">1</span> OF 3
+                        </span>
+                    </div>
+
+                    <form id="incidentForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
+                        <!-- Step 1: Incident Specifics -->
+                        <div id="step-1" class="space-y-4">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-cyan-700 dark:text-cyan-400 font-mono flex items-center gap-2">
+                                <span class="h-5 w-5 rounded-full bg-cyan-100 dark:bg-cyan-950 border border-cyan-500/50 flex items-center justify-center text-[10px] text-cyan-800 dark:text-cyan-300">১</span>
+                                ঘটনার বিবরণ ও ধরন
+                            </h4>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">অপরাধের ধরন (Violation Type) *</label>
+                                    <select id="violationType" required class="w-full bg-slate-50 dark:bg-navy-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors">
+                                        <option value="Custodial Torture">হেফাজতে নির্যাতন (Custodial Torture & Abuse)</option>
+                                        <option value="Unlawful Lethal Force">বেআইনি গুলি বা প্রাণঘাতী বলপ্রয়োগ (Unlawful Lethal Force)</option>
+                                        <option value="Enforced Disappearance">গুম বা গোপন বন্দিশালায় আটক (Enforced Disappearance)</option>
+                                        <option value="Extortion & Harassment">চাঁদাবাজি ও ভুয়া মামলা দিয়ে হয়রানি (Extortion / Harassment)</option>
+                                        <option value="FIR Refusal">থানায় মামলা গ্রহণে অস্বীকৃতি (Refusal to Register FIR)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">ঘটনাস্থল (বিভাগ ও থানা) *</label>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <select id="division" required class="bg-slate-50 dark:bg-navy-950 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-2 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors">
+                                            <option value="ঢাকা">ঢাকা বিভাগ</option>
+                                            <option value="চট্টগ্রাম" selected>চট্টগ্রাম বিভাগ</option>
+                                            <option value="রংপুর">রংপুর বিভাগ</option>
+                                            <option value="রাজশাহী">রাজশাহী বিভাগ</option>
+                                            <option value="খুলনা">খুলনা বিভাগ</option>
+                                            <option value="বরিশাল">বরিশাল বিভাগ</option>
+                                            <option value="সিলেট">সিলেট বিভাগ</option>
+                                            <option value="ময়মনসিংহ">ময়মনসিংহ বিভাগ</option>
+                                        </select>
+                                        <input type="text" id="thanaLocation" required placeholder="থানার নাম (উদাঃ কোতোয়ালী)" class="bg-slate-50 dark:bg-navy-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">ঘটনার তারিখ ও সময় *</label>
+                                    <input type="datetime-local" id="incidentDate" required class="w-full bg-slate-50 dark:bg-navy-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">অভিযুক্ত বাহিনী / ইউনিট</label>
+                                    <select id="accusedForce" class="w-full bg-slate-50 dark:bg-navy-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors">
+                                        <option value="Bangladesh Police (Thana)">বাংলাদেশ পুলিশ (থানা পর্যায়)</option>
+                                        <option value="Detective Branch (DB)">ডিটেকটিভ ব্রাঞ্চ (ডিবি / সাদা পোশাক)</option>
+                                        <option value="Rapid Action Battalion (RAB)">র‍্যাব (RAB)</option>
+                                        <option value="Armed Police Battalion (APBn)">এপিবিএন (APBn)</option>
+                                        <option value="Unidentified Officers">অজ্ঞাতনামা কর্মকর্তা / সনাক্ত করা যায়নি</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">অভিযুক্ত কর্মকর্তার পরিচয় (যদি জানা থাকে)</label>
+                                <input type="text" id="officerName" placeholder="নাম, ব্যাজ নম্বর, পদবি বা শারীরিক বর্ণনা..." class="w-full bg-slate-50 dark:bg-navy-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">ঘটনার পূর্ণাঙ্গ বর্ণনা *</label>
+                                <textarea id="incidentDetails" rows="3" required placeholder="কী ঘটেছিল বিস্তারিত লিখুন... ঘটনাস্থলে উপস্থিত প্রত্যক্ষদর্শীদের বিবরণ ইত্যাদি" class="w-full bg-slate-50 dark:bg-navy-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cyan-500 leading-relaxed transition-colors"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Evidence Upload & Cryptographic Prep -->
+                        <div id="step-2" class="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-cyan-700 dark:text-cyan-400 font-mono flex items-center gap-2">
+                                <span class="h-5 w-5 rounded-full bg-cyan-100 dark:bg-cyan-950 border border-cyan-500/50 flex items-center justify-center text-[10px] text-cyan-800 dark:text-cyan-300">২</span>
+                                প্রমাণাদি সংযুক্তি ও হ্যাশ এনক্রিপশন (Evidence Vault)
+                            </h4>
+
+                            <!-- Drag & Drop Area -->
+                            <div class="border-2 border-dashed border-slate-300 hover:border-cyan-500 dark:border-slate-700 dark:hover:border-cyan-500 rounded-xl p-5 text-center transition bg-slate-50 dark:bg-navy-950/60 cursor-pointer" onclick="document.getElementById('fileUpload').click()">
+                                <input type="file" id="fileUpload" multiple class="hidden" onchange="handleFileSelect(this)">
+                                <div class="flex flex-col items-center">
+                                    <div class="h-10 w-10 rounded-full bg-slate-200 dark:bg-navy-800 flex items-center justify-center text-cyan-600 dark:text-cyan-400 mb-2">
+                                        <i class="fa-solid fa-cloud-arrow-up text-lg"></i>
+                                    </div>
+                                    <p class="text-xs font-medium text-slate-800 dark:text-slate-200">ছবি, ভিডিও, প্রেসক্রিপশন বা অটোপসি রিপোর্ট আপলোড করুন</p>
+                                    <p class="text-[11px] text-slate-500 mt-1">MP4, JPG, PNG, PDF (সর্বোচ্চ ৫০ এমবি) | তাৎক্ষণিক ক্লায়েন্ট-সাইড SHA-256 হ্যাশ করা হবে</p>
+                                </div>
+                            </div>
+
+                            <!-- Selected Files List & Real-time Hash -->
+                            <div id="selectedFilesContainer" class="hidden space-y-2">
+                                <span class="text-[11px] font-mono text-slate-500 dark:text-slate-400 uppercase">প্রস্তুতকৃত প্রমাণাদি (Cryptographic Digest):</span>
+                                <div id="filesList" class="space-y-1.5"></div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Whistleblower Protection & Contact -->
+                        <div id="step-3" class="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-cyan-700 dark:text-cyan-400 font-mono flex items-center gap-2">
+                                <span class="h-5 w-5 rounded-full bg-cyan-100 dark:bg-cyan-950 border border-cyan-500/50 flex items-center justify-center text-[10px] text-cyan-800 dark:text-cyan-300">৩</span>
+                                সুরক্ষা ব্যবস্থা ও ট্র্যাকিং তথ্য
+                            </h4>
+
+                            <div class="bg-slate-50 dark:bg-navy-950 p-3.5 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2.5 transition-colors">
+                                <label class="flex items-start gap-2.5 cursor-pointer">
+                                    <input type="checkbox" id="maskIdentity" class="mt-0.5 rounded border-slate-400 text-cyan-600 focus:ring-0 bg-white dark:bg-navy-900" checked>
+                                    <div>
+                                        <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">পরিচয় গোপন রাখুন (Whistleblower Anonymous Mode)</span>
+                                        <p class="text-[11px] text-slate-500 dark:text-slate-400">তদন্ত রিপোর্ট ও আদালতে আপনার নাম প্রকাশ পাবে না। আপনাকে একটি সুরক্ষিত ছদ্মনামে চিহ্নিত করা হবে।</p>
+                                    </div>
+                                </label>
+                                <label class="flex items-start gap-2.5 cursor-pointer">
+                                    <input type="checkbox" id="needReparation" class="mt-0.5 rounded border-slate-400 text-cyan-600 focus:ring-0 bg-white dark:bg-navy-900">
+                                    <div>
+                                        <span class="text-xs font-semibold text-amber-700 dark:text-amber-300">জরুরি চিকিৎসা ও ক্ষতিপূরণ তহবিল প্রয়োজন (৪৮ ঘণ্টা উইন্ডো)</span>
+                                        <p class="text-[11px] text-slate-500 dark:text-slate-400">শারীরিক নির্যাতনে আহত হলে প্রাথমিক চিকিৎসার জন্য সরকার ও অপরাধী কর্মকর্তার বাজেয়াপ্ত তহবিল থেকে সহায়তা।</p>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">মোবাইল নম্বর (SMS ট্র্যাকিংয়ের জন্য) *</label>
+                                    <input type="tel" id="contactPhone" required placeholder="017xxxxxxxx" class="w-full bg-slate-50 dark:bg-navy-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cyan-500 font-mono transition-colors">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">বিকল্প নিরাপদ ইমেইল (ঐচ্ছিক)</label>
+                                    <input type="email" id="contactEmail" placeholder="secure-mail@proton.me" class="w-full bg-slate-50 dark:bg-navy-950 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-800 dark:text-slate-200 focus:outline-none focus:border-cyan-500 transition-colors">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="pt-4 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+                            <span class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 font-mono">
+                                <i class="fa-solid fa-shield-cat text-emerald-600 dark:text-emerald-400"></i> CrPC 132/197 Immunity Bypassed
+                            </span>
+                            <button type="submit" id="btnSubmitComplaint" class="bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-500 dark:to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white dark:text-navy-950 font-bold px-6 py-2.5 rounded-xl text-xs flex items-center gap-2 shadow-lg shadow-cyan-500/20 transition transform active:scale-95">
+                                <span>অভিযোগ রেজিস্টার ও হ্যাশ সিল করুন</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Right 1 Col: Live Tracking & Protocol Info -->
+                <div class="space-y-6">
+                    <!-- Tracking Box -->
+                    <div class="bg-white dark:bg-navy-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm dark:shadow-xl backdrop-blur transition-colors">
+                        <div class="flex items-center gap-2 pb-3 border-b border-slate-200 dark:border-slate-800 mb-4">
+                            <i class="fa-solid fa-magnifying-glass-location text-cyan-600 dark:text-cyan-400"></i>
+                            <h3 class="text-sm font-bold text-slate-900 dark:text-white">অভিযোগের বর্তমান অগ্রগতি ট্র্যাক করুন</h3>
+                        </div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mb-3">SMS-এ প্রাপ্ত ১৬-ডিজিট ট্র্যাকিং আইডি লিখুন:</p>
+                        <div class="space-y-3">
+                            <div class="relative">
+                                <input type="text" id="trackInput" placeholder="উদাঃ BD-IPOC-2026-89421" class="w-full bg-slate-50 dark:bg-navy-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-slate-800 dark:text-slate-200 uppercase font-mono focus:outline-none focus:border-cyan-500 transition-colors">
+                                <button onclick="trackCase()" class="absolute right-1.5 top-1.5 bg-slate-200 dark:bg-navy-800 hover:bg-cyan-600 hover:text-white dark:hover:bg-cyan-500 dark:hover:text-navy-950 text-slate-700 dark:text-cyan-400 px-3 py-1.5 rounded-lg text-xs font-semibold transition">
+                                    খুঁজুন
+                                </button>
+                            </div>
+                            <div class="flex items-center justify-between text-[11px] text-slate-500">
+                                <span>নমুনা আইডি:</span>
+                                <span class="font-mono text-cyan-600 dark:text-cyan-400 font-semibold cursor-pointer hover:underline" onclick="document.getElementById('trackInput').value='BD-IPOC-2026-89421'; trackCase()">BD-IPOC-2026-89421</span>
+                            </div>
+                        </div>
+
+                        <!-- Tracking Result Box (Dynamic) -->
+                        <div id="trackingResult" class="mt-4 p-4 rounded-xl bg-slate-50 dark:bg-navy-950 border border-slate-200 dark:border-slate-800 hidden transition-colors">
+                            <!-- Filled dynamically by JS -->
+                        </div>
+                    </div>
+
+                    <!-- 4-Pillars Safeguards Mini-Card -->
+                    <div class="bg-white/80 dark:bg-navy-900/60 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 space-y-3 text-xs shadow-sm transition-colors">
+                        <h4 class="font-bold text-slate-800 dark:text-slate-200 text-xs flex items-center gap-2">
+                            <i class="fa-solid fa-scale-balanced text-emerald-600 dark:text-emerald-400"></i> ৪টি অলঙ্ঘনীয় সাংবিধানিক গ্যারান্টি:
+                        </h4>
+                        <ul class="space-y-2 text-slate-600 dark:text-slate-400">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-cyan-600 dark:text-cyan-400 mt-0.5"></i>
+                                <span><strong>বেসামরিক তদন্ত:</strong> কোনো কর্মরত পুলিশ কর্মকর্তা এই কমিশনে অন্তর্ভুক্ত থাকতে পারবেন না।</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-cyan-600 dark:text-cyan-400 mt-0.5"></i>
+                                <span><strong>সরাসরি প্রসিকিউশন:</strong> স্বরাষ্ট্র মন্ত্রণালয়ের অনুমোদন ছাড়াই স্পেশাল ট্রাইব্যুনালে চার্জশিট দাখিল।</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-cyan-600 dark:text-cyan-400 mt-0.5"></i>
+                                <span><strong>হয়রানিমূলক মামলা থেকে সুরক্ষা:</strong> অভিযোগ চলাকালীন বাদীর বিরুদ্ধে কোনো পুলিশি কাউন্টার-মামলা নেওয়া নিষিদ্ধ।</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-cyan-600 dark:text-cyan-400 mt-0.5"></i>
+                                <span><strong>সৎ কর্মকর্তার সুরক্ষা:</strong> উদ্দেশ্যমূলক মিথ্যা অভিযোগ ১৪ দিনের ট্রায়াজ ডেস্কেই খারিজ হবে।</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- TAB 2: CRYPTOGRAPHIC VAULT & TAMPER-DETECTION LAB              -->
+        <!-- ============================================================== -->
+        <section id="view-vault" class="tab-view hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-vault text-cyan-600 dark:text-cyan-400"></i> ক্রিপ্টোগ্রাফিক এভিডেন্স ভল্ট (SHA-256 Chain of Custody)
+                    </h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">আইপোক সার্ভার ও নোডে রক্ষিত ডিজিটাল প্রমাণের ক্রিপ্টোগ্রাফিক ইন্টিগ্রিটি লাইভ যাচাইকরণ</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center gap-1.5 text-xs bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40 dark:border-emerald-600/40 px-3 py-1 rounded-full font-mono">
+                        <i class="fa-solid fa-circle text-[8px] animate-pulse"></i> ZERO DATA LOSS PROTOCOL
+                    </span>
+                    <button onclick="runAllIntegrityChecks()" class="bg-white dark:bg-navy-800 hover:bg-slate-50 dark:hover:bg-navy-700 text-cyan-700 dark:text-cyan-400 border border-slate-300 dark:border-cyan-800 text-xs px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm transition">
+                        <i class="fa-solid fa-rotate"></i> সকল প্রমাণ পুনঃযাচাই
+                    </button>
+                </div>
+            </div>
+
+            <!-- Interactive Tamper Simulator Lab -->
+            <div class="bg-white dark:bg-gradient-to-br dark:from-navy-900 dark:to-navy-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-md dark:shadow-2xl transition-colors">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-xs font-mono font-bold text-amber-800 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/80 px-2.5 py-1 rounded border border-amber-500/40 dark:border-amber-600/40">
+                        <i class="fa-solid fa-flask"></i> ইন্টারেক্টিভ জাজ ডেমো ল্যাব: প্রমাণ বিকৃতি প্রতিরোধ পরীক্ষা
+                    </span>
+                    <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">Algorithm: SHA-256 (FIPS 180-4 Standard)</span>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300 mb-6 leading-relaxed">
+                    থানা বা স্বরাষ্ট্র মন্ত্রণালয় থেকে অতীতে ভিডিও নষ্ট বা সুরতহাল রিপোর্ট পরিবর্তনের অভিযোগ ছিল। এই সিস্টেমে একটি ফাইলে <strong>মাত্র ১টি অক্ষর বা ১ বাইট ডেটা পরিবর্তন করলে</strong> সাথে সাথে হ্যাশ মিসম্যাচ হয়ে লাল সংকেত বাজবে। নিচে নিজে পরীক্ষা করে দেখুন:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Left: Original Vault State -->
+                    <div class="bg-slate-50 dark:bg-navy-950 p-4 rounded-xl border border-slate-200 dark:border-slate-800 space-y-3 transition-colors">
+                        <div class="flex items-center justify-between text-xs pb-2 border-b border-slate-200 dark:border-slate-800">
+                            <span class="font-bold text-slate-800 dark:text-slate-300"><i class="fa-solid fa-video text-cyan-600 dark:text-cyan-400 mr-1.5"></i> মূল প্রমাণ: সিসিটিভি ফুটেজ ডাম্প (CCTV_Gate_02.mp4)</span>
+                            <span class="text-emerald-600 dark:text-emerald-400 font-mono text-[11px] font-bold"><i class="fa-solid fa-lock"></i> Locked & Verified</span>
+                        </div>
+                        <div class="text-xs space-y-2 font-mono">
+                            <div class="flex justify-between text-slate-500 dark:text-slate-400">
+                                <span>ক্যামেরা মেটাডাটা:</span>
+                                <span class="text-slate-800 dark:text-slate-200">2026-07-18T14:22:10Z | FPS: 30</span>
+                            </div>
+                            <div class="flex justify-between text-slate-500 dark:text-slate-400">
+                                <span>মূল বাইট সাইজ:</span>
+                                <span class="text-slate-800 dark:text-slate-200">48,221,904 Bytes</span>
+                            </div>
+                            <div class="mt-2">
+                                <span class="text-slate-500 dark:text-slate-400 block text-[11px]">নিবন্ধনকালীন SHA-256 হ্যাশ সিগনেচার:</span>
+                                <p id="original-hash-display" class="bg-white dark:bg-navy-900 p-2 rounded text-[11px] text-cyan-700 dark:text-cyan-300 break-all border border-slate-300 dark:border-cyan-900/50 select-all font-mono">
+                                    e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Simulated Tamper Zone -->
+                    <div class="bg-slate-50 dark:bg-navy-950 p-4 rounded-xl border border-slate-200 dark:border-slate-800 space-y-3 flex flex-col justify-between transition-colors">
+                        <div>
+                            <div class="flex items-center justify-between text-xs pb-2 border-b border-slate-200 dark:border-slate-800">
+                                <span class="font-bold text-slate-800 dark:text-slate-300"><i class="fa-solid fa-microchip text-amber-600 dark:text-amber-400 mr-1.5"></i> লাইভ যাচাইকরণ নোড (Inspection Node)</span>
+                                <span id="vault-status-badge" class="bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-400 border border-emerald-400 dark:border-emerald-600/40 text-[10px] px-2 py-0.5 rounded-full font-bold">
+                                    AUTHENTIC & UNTOUCHED
+                                </span>
+                            </div>
+                            <div class="mt-3 text-xs space-y-2 font-mono">
+                                <div>
+                                    <span class="text-slate-500 dark:text-slate-400 block text-[11px]">বর্তমান ইন্সপেকশন হ্যাশ:</span>
+                                    <p id="current-hash-display" class="bg-white dark:bg-navy-900 p-2 rounded text-[11px] text-emerald-700 dark:text-emerald-300 break-all border border-slate-300 dark:border-emerald-900/50 font-mono">
+                                        e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+                                    </p>
+                                </div>
+                                <div id="tamper-alert-box" class="hidden p-2.5 rounded bg-red-100 dark:bg-red-950/80 border border-red-400 dark:border-red-500/50 text-red-900 dark:text-red-200 text-xs">
+                                    <i class="fa-solid fa-triangle-exclamation text-red-600 dark:text-red-400 mr-1"></i>
+                                    <strong>ক্রিপ্টোগ্রাফিক চেইন ভেঙে গেছে!</strong> মূল প্রমাণ বিকৃত করার অপচেষ্টা শনাক্ত হয়েছে। আদালত এই বিকৃতি স্বয়ংক্রিয়ভাবে বাতিল করবে।
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tamper Action Buttons -->
+                        <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex flex-wrap gap-2">
+                            <button onclick="simulateTamper()" id="btn-tamper" class="flex-1 bg-red-100 hover:bg-red-200 dark:bg-red-900/60 dark:hover:bg-red-800 text-red-800 dark:text-red-200 border border-red-300 dark:border-red-700/60 px-3 py-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition">
+                                <i class="fa-solid fa-bug"></i> ১ বাইট ডেটা বিকৃত করার চেষ্টা করুন
+                            </button>
+                            <button onclick="resetTamper()" id="btn-reset-tamper" class="bg-slate-200 hover:bg-slate-300 dark:bg-navy-800 dark:hover:bg-navy-700 text-slate-800 dark:text-slate-300 border border-slate-300 dark:border-slate-700 px-3 py-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+                                <i class="fa-solid fa-rotate-left"></i> রিস্টোর
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vault Records Table -->
+            <div class="bg-white dark:bg-navy-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm dark:shadow-xl transition-colors">
+                <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-navy-950/60 transition-colors">
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-cyan-600 dark:text-cyan-400"></i> ভল্টে সংরক্ষিত প্রমাণের রেজিস্ট্রি (Active Evidence Inventory)
+                    </h3>
+                    <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">মোট সংরক্ষিত প্রমাণ: <strong class="text-cyan-600 dark:text-cyan-400">৫টি আইটেম</strong></span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-700 dark:text-slate-300">
+                        <thead class="bg-slate-100 dark:bg-navy-950 text-slate-600 dark:text-slate-400 uppercase font-mono text-[11px] border-b border-slate-200 dark:border-slate-800">
+                            <tr>
+                                <th class="px-4 py-3">ট্র্যাকিং আইডি</th>
+                                <th class="px-4 py-3">প্রমাণের ধরন</th>
+                                <th class="px-4 py-3">ফাইল সাইজ</th>
+                                <th class="px-4 py-3">SHA-256 ক্রিপ্টোগ্রাফিক হ্যাশ</th>
+                                <th class="px-4 py-3">টাইমস্ট্যাম্প</th>
+                                <th class="px-4 py-3 text-right">স্ট্যাটাস</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vaultTableBody" class="divide-y divide-slate-200 dark:divide-slate-800/60 font-mono text-[11px]">
+                            <!-- Rows injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- TAB 3: 14-DAY TRIAGE & CASE ENGINE (INVESTIGATOR DESK)         -->
+        <!-- ============================================================== -->
+        <section id="view-triage" class="tab-view hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-list-check text-cyan-600 dark:text-cyan-400"></i> বেসামরিক ইনভেস্টিগেশন ব্যুরো: ১৪-দিনের ট্রায়াজ ডেস্ক
+                    </h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">আইপোক নিরপেক্ষ তদন্তকারী ও অবসরপ্রাপ্ত জুডিশিয়াল ম্যাজিস্ট্রেটদের কার্যকরী ড্যাশবোর্ড</p>
+                </div>
+                <!-- Filter Pills -->
+                <div class="flex items-center gap-2 overflow-x-auto text-xs">
+                    <button onclick="filterTriage('all')" class="triage-filter-btn px-3 py-1.5 rounded-lg bg-cyan-600 dark:bg-cyan-500 text-white dark:text-navy-950 font-bold shadow-sm">সবগুলো (৪)</button>
+                    <button onclick="filterTriage('urgent')" class="triage-filter-btn px-3 py-1.5 rounded-lg bg-slate-200 dark:bg-navy-800 text-red-700 dark:text-red-300 hover:bg-slate-300 dark:hover:bg-navy-700">জরুরি চিকিৎসা (১)</button>
+                    <button onclick="filterTriage('probe')" class="triage-filter-btn px-3 py-1.5 rounded-lg bg-slate-200 dark:bg-navy-800 text-amber-700 dark:text-amber-300 hover:bg-slate-300 dark:hover:bg-navy-700">ফিল্ড তদন্তাধীন (২)</button>
+                    <button onclick="filterTriage('vexatious')" class="triage-filter-btn px-3 py-1.5 rounded-lg bg-slate-200 dark:bg-navy-800 text-slate-600 dark:text-slate-400 hover:bg-slate-300 dark:hover:bg-navy-700">খারিজকৃত ভুয়া (১)</button>
+                </div>
+            </div>
+
+            <!-- Triage Metrics KPI Row -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div class="bg-white dark:bg-navy-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm transition-colors">
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">গড় ট্রায়াজ নিষ্পত্তির সময়</span>
+                    <span class="text-xl font-extrabold text-cyan-700 dark:text-cyan-400 font-mono">৪.২ দিন</span>
+                    <span class="text-[10px] text-slate-500 block mt-1">(আইনি বাধ্যবাধকতা: সর্বোচ্চ ১৪ দিন)</span>
+                </div>
+                <div class="bg-white dark:bg-navy-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm transition-colors">
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">সৎ কর্মকর্তা সুরক্ষা হার</span>
+                    <span class="text-xl font-extrabold text-emerald-700 dark:text-emerald-400 font-mono">১২.৩%</span>
+                    <span class="text-[10px] text-slate-500 block mt-1">উদ্দেশ্যমূলক অভিযোগ ফিল্টারে খারিজ</span>
+                </div>
+                <div class="bg-white dark:bg-navy-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm transition-colors">
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">ভিকটিম চিকিৎসা মঞ্জুরি</span>
+                    <span class="text-xl font-extrabold text-amber-700 dark:text-amber-400 font-mono">৳ ১৭.৫ লাখ</span>
+                    <span class="text-[10px] text-slate-500 block mt-1">৪৮ ঘণ্টায় নগদ চিকিৎসা সহায়তা</span>
+                </div>
+                <div class="bg-white dark:bg-navy-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm transition-colors">
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">ট্রাইব্যুনালে সরাসরি চালান</span>
+                    <span class="text-xl font-extrabold text-accent-crimson font-mono">৩৮টি কেস</span>
+                    <span class="text-[10px] text-slate-500 block mt-1">CrPC 132/197 অনুমোদন ছাড়াই</span>
+                </div>
+            </div>
+
+            <!-- Interactive Triage Cases List -->
+            <div class="space-y-4" id="triageCardsContainer">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- TAB 4: SPECIAL TRIBUNAL DOSSIER GENERATOR                      -->
+        <!-- ============================================================== -->
+        <section id="view-dossier" class="tab-view hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-gavel text-cyan-600 dark:text-cyan-400"></i> স্পেশাল হিউম্যান রাইটস ট্রাইব্যুনাল ডসিয়ার (Court Dossier)
+                    </h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">নির্যাতন ও হেফাজতে মৃত্যু (নিবারণ) আইন ২০১৩ অনুযায়ী ট্রাইব্যুনালের জন্য প্রস্তুতকৃত স্বয়ংক্রিয় আইনি চার্জশিট</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="printDossier()" class="bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-500 dark:to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white dark:text-navy-950 font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2 shadow-md transition">
+                        <i class="fa-solid fa-print"></i> জুডিশিয়াল প্রিন্ট / PDF সংরক্ষণ
+                    </button>
+                </div>
+            </div>
+
+            <!-- Court Dossier Preview Document -->
+            <div id="court-dossier-print" class="bg-white dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-700 rounded-2xl p-6 sm:p-10 shadow-lg dark:shadow-2xl text-slate-800 dark:text-slate-200 max-w-4xl mx-auto font-serif space-y-6 transition-colors">
+                <!-- Header -->
+                <div class="text-center pb-6 border-b-2 border-slate-300 dark:border-slate-600 space-y-2">
+                    <div class="flex items-center justify-center gap-2 text-xs font-mono tracking-widest text-slate-500 dark:text-slate-400 uppercase font-bold">
+                        <i class="fa-solid fa-scale-balanced text-cyan-600 dark:text-cyan-400"></i>
+                        The Republic of Bangladesh | Special Human Rights Tribunal
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-bold tracking-wide text-slate-900 dark:text-white uppercase font-sans">
+                        স্বাধীন পুলিশ পর্যবেক্ষণ কমিশন (IPOC) — আনুষ্ঠানিক অভিযোগপত্র
+                    </h3>
+                    <p class="text-xs font-sans text-cyan-800 dark:text-cyan-300 font-mono font-semibold">
+                        FORMAL INDICTMENT UNDER SECTION 15, TORTURE AND CUSTODIAL DEATH (PREVENTION) ACT, 2013
+                    </p>
+                    <div class="inline-block bg-slate-100 dark:bg-navy-950 px-4 py-1 rounded border border-slate-300 dark:border-slate-700 text-xs font-mono text-amber-800 dark:text-amber-300 font-bold">
+                        DOSSIER NO: <span id="dossier-id">IPOC/TRIBUNAL/2026/0894</span> | STATUTORY WAIVER OF CRPC 132/197 APPLIED
+                    </div>
+                </div>
+
+                <!-- Case Details Matrix -->
+                <div class="grid grid-cols-2 gap-4 text-xs font-sans border border-slate-200 dark:border-slate-700 rounded-xl p-4 bg-slate-50 dark:bg-slate-950/50">
+                    <div>
+                        <span class="text-slate-500 dark:text-slate-400 block font-mono text-[11px]">অভিযোগকারী (Complainant / Victim):</span>
+                        <strong class="text-slate-900 dark:text-white text-sm" id="dossier-victim">সুরক্ষিত ছদ্মনাম: ভিকটিম-০৮৯৪ (পরিচয় গোপনকৃত)</strong>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">সাক্ষী সুরক্ষা অধ্যাদেশ ২০২৬ মোতাবেক ছদ্মনাম বরাদ্দ</p>
+                    </div>
+                    <div>
+                        <span class="text-slate-500 dark:text-slate-400 block font-mono text-[11px]">প্রধান অভিযুক্ত (Accused Public Servant):</span>
+                        <strong class="text-red-700 dark:text-red-400 text-sm" id="dossier-accused">এসআই মোঃ রফিকুল ইসলাম (ব্যাজ নং: ৯৮২১, কোতোয়ালী থানা)</strong>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">দায়িত্ব: সাব-ইন্সপেক্টর / তৎকালীন ডিউটি অফিসার</p>
+                    </div>
+                    <div class="pt-2 border-t border-slate-200 dark:border-slate-800">
+                        <span class="text-slate-500 dark:text-slate-400 block font-mono text-[11px]">অপরাধের স্থান ও সময়:</span>
+                        <span class="text-slate-800 dark:text-slate-200" id="dossier-location">কোতোয়ালী থানা লকআপ নং ৩ | ১৮ জুলাই ২০২৪, রাত ০১:১৫ ঘটিকা</span>
+                    </div>
+                    <div class="pt-2 border-t border-slate-200 dark:border-slate-800">
+                        <span class="text-slate-500 dark:text-slate-400 block font-mono text-[11px]">লঙ্ঘিত মৌলিক অধিকার ও আইন:</span>
+                        <span class="text-slate-800 dark:text-slate-200">সংবিধানের অনুচ্ছেদ ৩১, ৩২, ৩৫(৫); নির্যাতন আইন ২০১৩-এর ধারা ১৩/১৫</span>
+                    </div>
+                </div>
+
+                <!-- Forensic Evidence Table with Cryptographic Signatures -->
+                <div class="space-y-3 font-sans">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 font-mono flex items-center gap-2">
+                        <i class="fa-solid fa-fingerprint text-cyan-600 dark:text-cyan-400"></i> ক্রিপ্টোগ্রাফিক ডিজিটাল সাক্ষ্যসূচি (Chain of Custody Exhibit)
+                    </h4>
+                    <div class="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden text-xs">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-100 dark:bg-slate-950 text-slate-600 dark:text-slate-400 font-mono text-[11px] border-b border-slate-200 dark:border-slate-700">
+                                <tr>
+                                    <th class="p-3">প্রদর্শনী (Exhibit)</th>
+                                    <th class="p-3">বিবরণ</th>
+                                    <th class="p-3">SHA-256 ক্রিপ্টোগ্রাফিক হ্যাশ সিল</th>
+                                    <th class="p-3">ফরেনসিক স্থিতি</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 dark:divide-slate-800 text-[11px] font-mono">
+                                <tr>
+                                    <td class="p-3 text-cyan-700 dark:text-cyan-300 font-bold">Exhibit-A</td>
+                                    <td class="p-3 font-sans text-slate-700 dark:text-slate-300">লকআপের বাইরের সিসিটিভি ফুটেজ (নির্যাতনের মুহূর্ত)</td>
+                                    <td class="p-3 text-slate-500 dark:text-slate-400 break-all select-all">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</td>
+                                    <td class="p-3 text-emerald-600 dark:text-emerald-400 font-bold">অপরিবর্তনীয় নিশ্চিত</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 text-cyan-700 dark:text-cyan-300 font-bold">Exhibit-B</td>
+                                    <td class="p-3 font-sans text-slate-700 dark:text-slate-300">ঢাকা মেডিকেল কলেজ ফরেনসিক ইনজুরি সার্টিফিকেট</td>
+                                    <td class="p-3 text-slate-500 dark:text-slate-400 break-all select-all">9f83461ace7f01b7f43fb56c3a5ce110650b71f0329fc945905cfec4ffb4eb82</td>
+                                    <td class="p-3 text-emerald-600 dark:text-emerald-400 font-bold">অপরিবর্তনীয় নিশ্চিত</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-3 text-cyan-700 dark:text-cyan-300 font-bold">Exhibit-C</td>
+                                    <td class="p-3 font-sans text-slate-700 dark:text-slate-300">ডিজিটাল জিডি বইয়ের আসল টাইমস্ট্যাম্প লক</td>
+                                    <td class="p-3 text-slate-500 dark:text-slate-400 break-all select-all">a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e</td>
+                                    <td class="p-3 text-emerald-600 dark:text-emerald-400 font-bold">অপরিবর্তনীয় নিশ্চিত</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Investigative Findings & Conclusion -->
+                <div class="space-y-3 font-sans text-xs text-slate-700 dark:text-slate-300 leading-relaxed border-t border-slate-200 dark:border-slate-800 pt-4">
+                    <h4 class="font-bold text-slate-900 dark:text-white text-sm">তদন্তকারী ব্যুরোর সিদ্ধান্ত ও আবেদন:</h4>
+                    <p>
+                        ১. অভিযুক্ত কর্মকর্তা ক্ষমতার অপব্যবহারপূর্বক কোনো বৈধ পরোয়ানা ব্যতীত ভিকটিমকে আটক করে বেআইনিভাবে নির্যাতন চালিয়েছেন, যা ফরেনসিক মেডিকেল রিপোর্ট ও সিসিটিভি হ্যাশে দ্ব্যর্থহীনভাবে প্রমাণিত।
+                    </p>
+                    <p>
+                        ২. ফৌজদারি কার্যবিধির ১৩২ এবং ১৯৭ ধারার কোনো প্রশাসনিক অনুমোদনের প্রয়োজন নাই মর্মে প্রস্তাবিত পুলিশ অধ্যাদেশ ২০২৬ এর আলোকে এই কমিশন সরাসরি অভিযোগ আমলে নেওয়ার প্রার্থনা জানাচ্ছে।
+                    </p>
+                </div>
+
+                <!-- Signature & Seal of Independent Commission -->
+                <div class="pt-8 border-t border-slate-300 dark:border-slate-700 flex flex-wrap justify-between items-end text-xs font-sans">
+                    <div>
+                        <div class="h-14 w-32 border-b border-dashed border-slate-400 dark:border-slate-500 flex items-center justify-center text-cyan-700 dark:text-cyan-400 font-mono italic text-xs">
+                            [Digitally Sealed]
+                        </div>
+                        <span class="block font-bold text-slate-900 dark:text-slate-200 mt-1">তদন্ত কর্মকর্তা, ব্যুরো অব সিভিলিয়ান ইনভেস্টিগেশন</span>
+                        <span class="text-[11px] text-slate-500 dark:text-slate-400">স্বাধীন পুলিশ পর্যবেক্ষণ কমিশন (IPOC)</span>
+                    </div>
+                    <div class="text-right">
+                        <div class="inline-block border-2 border-emerald-600/70 dark:border-emerald-500/60 rounded-lg p-2 text-center text-emerald-700 dark:text-emerald-400 font-mono text-[10px]">
+                            <i class="fa-solid fa-stamp text-lg mb-1 block"></i>
+                            SHA-256 VAULT VERIFIED<br>TRIBUNAL ADMISSIBLE
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================== -->
+        <!-- TAB 5: PUBLIC TRANSPARENCY & TRUST DASHBOARD                   -->
+        <!-- ============================================================== -->
+        <section id="view-transparency" class="tab-view hidden space-y-8">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-chart-line text-cyan-600 dark:text-cyan-400"></i> জাতীয় পুলিশ জবাবদিহিতা ও জনআস্থা ইনডেক্স
+                    </h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">রিয়েল-টাইম পাবলিক ডেটা ড্যাশবোর্ড | তথ্যের অবাধ প্রবাহ ও জনবিশ্বাস পুনরুদ্ধার</p>
+                </div>
+                <div class="text-xs font-mono text-slate-600 dark:text-slate-400 bg-white dark:bg-navy-900 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm">
+                    সর্বশেষ আপডেট: <span class="text-cyan-600 dark:text-cyan-400 font-bold">আজ, ৩ মিনিট আগে</span>
+                </div>
+            </div>
+
+            <!-- Macro Target Trackers (From Presentation Slide 16) -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+                <div class="bg-white dark:bg-navy-900/90 border border-slate-200 dark:border-slate-800 p-4 rounded-xl text-center shadow-sm transition-colors">
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">হ্যাশ ও ট্র্যাকিং প্রাপ্তি</span>
+                    <strong class="text-lg font-bold text-emerald-600 dark:text-emerald-400 font-mono">১৫ মিনিট</strong>
+                    <span class="text-[10px] text-emerald-600 dark:text-emerald-500/80 block mt-0.5">টার্গেট অর্জিত (৯৯.৪%)</span>
+                </div>
+                <div class="bg-white dark:bg-navy-900/90 border border-slate-200 dark:border-slate-800 p-4 rounded-xl text-center shadow-sm transition-colors">
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">প্রাথমিক ট্রায়াজ রিভিউ</span>
+                    <strong class="text-lg font-bold text-cyan-600 dark:text-cyan-400 font-mono">১৪ দিন</strong>
+                    <span class="text-[10px] text-cyan-600 dark:text-cyan-500/80 block mt-0.5">গড় সময়: ৪.২ দিন</span>
+                </div>
+                <div class="bg-white dark:bg-navy-900/90 border border-slate-200 dark:border-slate-800 p-4 rounded-xl text-center shadow-sm transition-colors">
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">পূর্ণাঙ্গ তদন্ত সমাপ্তি</span>
+                    <strong class="text-lg font-bold text-blue-600 dark:text-blue-400 font-mono">&lt; ৯০ দিন</strong>
+                    <span class="text-[10px] text-blue-600 dark:text-blue-500/80 block mt-0.5">আগের গড়ে ৭২০ দিন ছিল</span>
+                </div>
+                <div class="bg-white dark:bg-navy-900/90 border border-slate-200 dark:border-slate-800 p-4 rounded-xl text-center shadow-sm transition-colors">
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">কাস্টোডিয়াল সাজা হার</span>
+                    <strong class="text-lg font-bold text-purple-600 dark:text-purple-400 font-mono">&gt; ৮৫%</strong>
+                    <span class="text-[10px] text-purple-600 dark:text-purple-500/80 block mt-0.5">পূর্বে ছিল &lt; ০.১%</span>
+                </div>
+                <div class="bg-white dark:bg-navy-900/90 border border-slate-200 dark:border-slate-800 p-4 rounded-xl text-center shadow-sm transition-colors">
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">লকআপে মৃত্যু (২৪ মাস)</span>
+                    <strong class="text-lg font-bold text-emerald-600 dark:text-emerald-400 font-mono">ZERO</strong>
+                    <span class="text-[10px] text-emerald-600 dark:text-emerald-500/80 block mt-0.5">শূন্য সহনশীলতা</span>
+                </div>
+                <div class="bg-white dark:bg-navy-900/90 border border-slate-200 dark:border-slate-800 p-4 rounded-xl text-center shadow-sm transition-colors">
+                    <span class="text-[11px] text-slate-500 dark:text-slate-400 block mb-1">জনগণের পুলিশে আস্থা</span>
+                    <strong class="text-lg font-bold text-amber-600 dark:text-amber-400 font-mono">&gt; ৭০%</strong>
+                    <span class="text-[10px] text-amber-600 dark:text-amber-500/80 block mt-0.5">৩ বছর মেয়াদি লক্ষ্য</span>
+                </div>
+            </div>
+
+            <!-- Heatmap & Division Chart Simulation -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Left: Divisional Accountability Tracker -->
+                <div class="bg-white dark:bg-navy-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm dark:shadow-xl space-y-4 transition-colors">
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center justify-between">
+                        <span><i class="fa-solid fa-map-location-dot text-cyan-600 dark:text-cyan-400 mr-2"></i>বিভাগভিত্তিক অভিযোগ ও নিষ্পত্তির চিত্র</span>
+                        <span class="text-xs font-mono text-slate-500 dark:text-slate-400">সর্বমোট: ১,২৮৪টি অভিযোগ</span>
+                    </h3>
+                    <div class="space-y-3 pt-2 text-xs">
+                        <!-- Division Bars -->
+                        <div>
+                            <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                                <span>ঢাকা বিভাগ (৩৯২টি অভিযোগ)</span>
+                                <span class="font-mono text-emerald-600 dark:text-emerald-400 font-bold">৮৮% নিষ্পত্তি</span>
+                            </div>
+                            <div class="h-2 w-full bg-slate-200 dark:bg-navy-950 rounded-full overflow-hidden">
+                                <div class="h-full bg-cyan-500 rounded-full" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                                <span>চট্টগ্রাম বিভাগ (২৮৫টি অভিযোগ)</span>
+                                <span class="font-mono text-emerald-600 dark:text-emerald-400 font-bold">৮২% নিষ্পত্তি</span>
+                            </div>
+                            <div class="h-2 w-full bg-slate-200 dark:bg-navy-950 rounded-full overflow-hidden">
+                                <div class="h-full bg-blue-500 rounded-full" style="width: 82%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                                <span>রংপুর বিভাগ (১৯৮টি অভিযোগ)</span>
+                                <span class="font-mono text-emerald-600 dark:text-emerald-400 font-bold">৯১% নিষ্পত্তি</span>
+                            </div>
+                            <div class="h-2 w-full bg-slate-200 dark:bg-navy-950 rounded-full overflow-hidden">
+                                <div class="h-full bg-emerald-500 rounded-full" style="width: 91%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                                <span>রাজশাহী বিভাগ (১৫৬টি অভিযোগ)</span>
+                                <span class="font-mono text-emerald-600 dark:text-emerald-400 font-bold">৭৯% নিষ্পত্তি</span>
+                            </div>
+                            <div class="h-2 w-full bg-slate-200 dark:bg-navy-950 rounded-full overflow-hidden">
+                                <div class="h-full bg-amber-500 rounded-full" style="width: 79%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-slate-700 dark:text-slate-300 mb-1">
+                                <span>খুলনা ও অন্যান্য বিভাগ (২৫৩টি অভিযোগ)</span>
+                                <span class="font-mono text-emerald-600 dark:text-emerald-400 font-bold">৮৫% নিষ্পত্তি</span>
+                            </div>
+                            <div class="h-2 w-full bg-slate-200 dark:bg-navy-950 rounded-full overflow-hidden">
+                                <div class="h-full bg-purple-500 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Dual Hybrid Governance Status -->
+                <div class="bg-white dark:bg-navy-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm dark:shadow-xl space-y-4 transition-colors">
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center justify-between">
+                        <span><i class="fa-solid fa-building-columns text-emerald-600 dark:text-emerald-400 mr-2"></i>ডুয়াল হাইব্রিড শাসন কাঠামোর অগ্রগতি</span>
+                        <span class="text-xs font-mono text-cyan-600 dark:text-cyan-400 font-bold">৩৬ মাসের রোডম্যাপ</span>
+                    </h3>
+
+                    <div class="space-y-4 pt-1 text-xs">
+                        <!-- Phase 1 -->
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-navy-950 border-l-4 border-cyan-500 border border-slate-200 dark:border-slate-800 space-y-1 transition-colors">
+                            <div class="flex justify-between font-bold text-slate-800 dark:text-slate-200">
+                                <span>ফেজ ১: ফাউন্ডেশন (মাস ০ - ৬)</span>
+                                <span class="text-emerald-600 dark:text-emerald-400 font-mono text-[11px]"><i class="fa-solid fa-check-double"></i> চলমান</span>
+                            </div>
+                            <p class="text-slate-500 dark:text-slate-400 text-[11px]">
+                                আইপোক অধ্যাদেশ জারি, ৫ সদস্যের নন-পার্টিসান সিলেকশন কলিজিয়াম কর্তৃক কমিশনার নিয়োগ, কেন্দ্রীয় এভিডেন্স ভল্ট চালু।
+                            </p>
+                        </div>
+
+                        <!-- Phase 2 -->
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-navy-950 border-l-4 border-amber-500 border border-slate-200 dark:border-slate-800 space-y-1 transition-colors">
+                            <div class="flex justify-between font-bold text-slate-800 dark:text-slate-200">
+                                <span>ফেজ ২: স্কেল ও সম্প্রসারণ (মাস ৬ - ১৮)</span>
+                                <span class="text-amber-600 dark:text-amber-400 font-mono text-[11px]">পরবর্তী ধাপ</span>
+                            </div>
+                            <p class="text-slate-500 dark:text-slate-400 text-[11px]">
+                                ৮টি বিভাগীয় আইপোক অফিস প্রতিষ্ঠা, ৬৪ জেলার মর্গসমূহ ডিজিটাল ভল্টে সংযুক্তকরণ, ৪,৫০০+ ইউনিয়ন ডিজিটাল সেন্টার অনবোর্ডিং।
+                            </p>
+                        </div>
+
+                        <!-- Phase 3 -->
+                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-navy-950 border-l-4 border-purple-500 border border-slate-200 dark:border-slate-800 space-y-1 transition-colors">
+                            <div class="flex justify-between font-bold text-slate-800 dark:text-slate-200">
+                                <span>ফেজ ৩: প্রাতিষ্ঠানিকীকরণ (মাস ১৮ - ৩৬)</span>
+                                <span class="text-purple-600 dark:text-purple-400 font-mono text-[11px]">চূড়ান্ত লক্ষ্য</span>
+                            </div>
+                            <p class="text-slate-500 dark:text-slate-400 text-[11px]">
+                                ১৮৬১ সালের পুলিশ আইন বাতিল করে গণতান্ত্রিক পুলিশ আইন প্রণয়ন, স্বয়ংক্রিয় হ্যাশসহ বডি-ক্যামেরা বাধ্যতামূলক এবং একাডেমি কারিকুলাম সংস্কার।
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ============================================================== -->
+    <!-- 2G SMS / USSD SIMULATOR MODAL                                  -->
+    <!-- ============================================================== -->
+    <div id="smsModal" class="fixed inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-navy-900 border border-slate-300 dark:border-slate-700 rounded-3xl max-w-sm w-full p-6 shadow-2xl relative transition-colors">
+            <button onclick="closeSmsSimulator()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-700 dark:hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="text-center mb-4">
+                <div class="h-12 w-12 rounded-2xl bg-cyan-50 dark:bg-cyan-950 border border-cyan-500/40 flex items-center justify-center text-cyan-600 dark:text-cyan-400 mx-auto mb-2 text-xl">
+                    <i class="fa-solid fa-mobile-screen"></i>
+                </div>
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white">২G ফিচার ফোন SMS গেটওয়ে</h3>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400">ইন্টারনেট ছাড়া প্রান্তিক নাগরিকের জন্য সরাসরি সিমুলেশন</p>
+            </div>
+
+            <!-- Simulated Phone Screen -->
+            <div class="bg-slate-950 border-2 border-slate-800 rounded-2xl p-4 font-mono text-xs space-y-3">
+                <div class="flex justify-between text-[10px] text-slate-500 border-b border-slate-800 pb-1">
+                    <span>TELCO: BTCL / GRAMEENPHONE</span>
+                    <span>BATTERY: 98%</span>
+                </div>
+                <div class="space-y-2">
+                    <div class="bg-navy-900/80 p-2.5 rounded-lg border border-slate-800 text-slate-300 text-[11px]">
+                        <span class="text-cyan-400 font-bold block mb-1">To: 333 (IPOC-BD)</span>
+                        <p id="sms-screen-text">
+                            "অভিযোগ গৃহিত হয়েছে। আপনার ট্র্যাকিং নং BD-IPOC-2026-89421। প্রমাণ হ্যাশ সংরক্ষিত। অগ্রগতি জানতে পাঠান: T 89421"
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 space-y-2">
+                <input type="text" id="smsInputCode" placeholder="টাইপ করুন: T 89421" value="T 89421" class="w-full bg-slate-50 dark:bg-navy-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-800 dark:text-white font-mono uppercase focus:outline-none focus:border-cyan-500">
+                <button onclick="simulateSmsSend()" class="w-full bg-cyan-600 dark:bg-cyan-500 hover:bg-cyan-500 dark:hover:bg-cyan-400 text-white dark:text-navy-950 font-bold py-2 rounded-xl text-xs transition">
+                    SMS পাঠান ও উত্তর দেখুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-navy-900 border-t border-slate-200 dark:border-slate-800 mt-12 py-6 px-4 text-xs text-slate-500 dark:text-slate-400 transition-colors">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-scale-balanced text-cyan-600 dark:text-cyan-400"></i>
+                <span class="font-bold text-slate-800 dark:text-slate-200">IPOC-Vault</span> — প্রস্তাবিত স্বাধীন পুলিশ পর্যবেক্ষণ কমিশন, বাংলাদেশ।
+            </div>
+            <div class="text-center md:text-right font-bengali text-slate-600 dark:text-slate-400">
+                উদ্যোক্তা: <strong>টিম Checks and Balances</strong> | কুমিল্লা বিশ্ববিদ্যালয় | স্যাপরান রাইটস হ্যাকাথন ২০২৬
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================== -->
+    <!-- JAVASCRIPT LOGIC & CRYPTOGRAPHY ENGINE                         -->
+    <!-- ============================================================== -->
+    <script>
+        // -------------------------------------------------------------
+        // Theme (Light / Dark) Toggle Engine
+        // -------------------------------------------------------------
+        function initTheme() {
+            // Default is now Light mode ('light')
+            const savedTheme = localStorage.getItem('ipoc_theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+                updateThemeUI(true);
+            } else {
+                document.documentElement.classList.remove('dark');
+                updateThemeUI(false);
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('ipoc_theme', isDark ? 'dark' : 'light');
+            updateThemeUI(isDark);
+        }
+
+        function updateThemeUI(isDark) {
+            const icon = document.getElementById('themeIcon');
+            const text = document.getElementById('themeText');
+            if (isDark) {
+                if (icon) icon.className = 'fa-solid fa-sun text-amber-400';
+                if (text) text.innerText = 'লাইট মোড';
+            } else {
+                if (icon) icon.className = 'fa-solid fa-moon text-slate-600';
+                if (text) text.innerText = 'ডার্ক মোড';
+            }
+        }
+
+        function getSwalTheme() {
+            const isDark = document.documentElement.classList.contains('dark');
+            return {
+                background: isDark ? '#0b192c' : '#ffffff',
+                color: isDark ? '#ffffff' : '#0f172a'
+            };
+        }
+
+        // -------------------------------------------------------------
+        // In-Memory Database for Prototype Demo
+        // -------------------------------------------------------------
+        const initialCases = [
+            {
+                id: 'BD-IPOC-2026-89421',
+                victim: 'ভিকটিম-০৮৯৪ (পরিচয় গোপনকৃত)',
+                phone: '01711***421',
+                division: 'চট্টগ্রাম',
+                thana: 'কোতোয়ালী',
+                type: 'Custodial Torture',
+                accused: 'এসআই মোঃ রফিকুল ইসলাম (ব্যাজ ৯৮২১)',
+                date: '2024-07-18 01:15',
+                status: 'Field Probe Active',
+                triageDays: 3,
+                reparation: true,
+                hash: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+                details: 'লকআপে শারীরিক নির্যাতন এবং পরিবারের নিকট ৫ লাখ টাকা চাঁদা দাবি।'
+            },
+            {
+                id: 'BD-IPOC-2026-44102',
+                victim: 'আহমেদ জুবায়ের',
+                phone: '01822***102',
+                division: 'রংপুর',
+                thana: 'রংপুর সদর',
+                type: 'Unlawful Lethal Force',
+                accused: 'অজ্ঞাতনামা পুলিশ সদস্য',
+                date: '2024-07-16 14:30',
+                status: 'Tribunal Indictment Filed',
+                triageDays: 1,
+                reparation: true,
+                hash: '9f83461ace7f01b7f43fb56c3a5ce110650b71f0329fc945905cfec4ffb4eb82',
+                details: 'বিক্ষোভে পয়েন্ট ব্ল্যাংক রেঞ্জ থেকে প্রাণঘাতী ছররা গুলি নিক্ষেপ।'
+            },
+            {
+                id: 'BD-IPOC-2026-11890',
+                victim: 'মোঃ তানভীর হাসান',
+                phone: '01933***890',
+                division: 'ঢাকা',
+                thana: 'ধানমন্ডি',
+                type: 'Extortion & Harassment',
+                accused: 'এএসআই কামরুল',
+                date: '2026-08-01 19:40',
+                status: 'Triage In Progress',
+                triageDays: 7,
+                reparation: false,
+                hash: 'a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e',
+                details: 'মোটরসাইকেল তল্লাশির নামে ফোনে ব্যক্তিগত ছবি ঘেঁটে চাঁদা দাবি।'
+            },
+            {
+                id: 'BD-IPOC-2026-00329',
+                victim: 'বেনামী আবেদনকারী',
+                phone: '01544***329',
+                division: 'রাজশাহী',
+                thana: 'বোয়ালিয়া',
+                type: 'Extortion & Harassment',
+                accused: 'ওসি মোঃ আসাদুল হক',
+                date: '2026-09-02 11:00',
+                status: 'Dismissed (Vexatious)',
+                triageDays: 2,
+                reparation: false,
+                hash: 'd41d8cd98f00b204e9800998ecf8427e00000000000000000000000000000000',
+                details: 'ব্যক্তিগত জমি বিরোধে সৎ পুলিশ কর্মকর্তার বিরুদ্ধে মিথ্যা বানোয়াট অভিযোগ।'
+            }
+        ];
+
+        let casesDB = [...initialCases];
+        let updcModeActive = false;
+        let selectedFilesData = [];
+
+        // -------------------------------------------------------------
+        // Client-Side Cryptographic SHA-256 Calculation (Web Crypto API)
+        // -------------------------------------------------------------
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function computeFileSha256(file) {
+            const buffer = await file.arrayBuffer();
+            const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // -------------------------------------------------------------
+        // Tab Navigation Switcher
+        // -------------------------------------------------------------
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-cyan-600', 'dark:bg-cyan-500', 'text-white', 'dark:text-navy-950', 'shadow-sm', 'shadow-md');
+                btn.classList.add('text-slate-600', 'dark:text-slate-300');
+            });
+
+            const targetView = document.getElementById(`view-${tabId}`);
+            const targetNav = document.getElementById(`nav-${tabId}`);
+
+            if (targetView) targetView.classList.remove('hidden');
+            if (targetNav) {
+                targetNav.classList.add('bg-cyan-600', 'dark:bg-cyan-500', 'text-white', 'dark:text-navy-950', 'shadow-sm');
+                targetNav.classList.remove('text-slate-600', 'dark:text-slate-300');
+            }
+
+            if (tabId === 'vault') renderVaultTable();
+            if (tabId === 'triage') renderTriageCards('all');
+        }
+
+        // -------------------------------------------------------------
+        // UPDC (Union Parishad Digital Centre) Mode Toggle
+        // -------------------------------------------------------------
+        function toggleUPDCMode() {
+            updcModeActive = !updcModeActive;
+            const banner = document.getElementById('updc-banner');
+            const btn = document.getElementById('btn-updc-mode');
+            const btnText = document.getElementById('updc-btn-text');
+            const swalTheme = getSwalTheme();
+
+            if (updcModeActive) {
+                banner.classList.remove('hidden');
+                btn.classList.add('bg-amber-500', 'text-navy-950', 'font-bold');
+                btnText.innerText = 'ইউডিসি সক্রিয় (ID: 412)';
+                Swal.fire({
+                    icon: 'info',
+                    title: 'ইউনিয়ন ডিজিটাল সেন্টার মোড সক্রিয়',
+                    text: 'গ্রামীণ নাগরিকের পক্ষে ডিজিটাল সেন্টারের উদ্যোক্তা হিসেবে অভিযোগ আপলোড মোড চালু হয়েছে।',
+                    confirmButtonColor: '#06b6d4',
+                    background: swalTheme.background,
+                    color: swalTheme.color
+                });
+            } else {
+                banner.classList.add('hidden');
+                btn.classList.remove('bg-amber-500', 'text-navy-950', 'font-bold');
+                btnText.innerText = 'ইউডিসি মোড';
+            }
+        }
+
+        // -------------------------------------------------------------
+        // File Selection & Live Hashing
+        // -------------------------------------------------------------
+        async function handleFileSelect(input) {
+            const files = Array.from(input.files);
+            if (files.length === 0) return;
+
+            const container = document.getElementById('selectedFilesContainer');
+            const list = document.getElementById('filesList');
+            container.classList.remove('hidden');
+            list.innerHTML = '';
+            selectedFilesData = [];
+
+            for (const file of files) {
+                const hash = await computeFileSha256(file);
+                selectedFilesData.push({ name: file.name, size: (file.size / 1024 / 1024).toFixed(2) + ' MB', hash });
+
+                const item = document.createElement('div');
+                item.className = 'bg-slate-50 dark:bg-navy-900 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800 text-xs flex flex-col sm:flex-row justify-between sm:items-center gap-1 transition-colors';
+                item.innerHTML = `
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        <i class="fa-solid fa-file-shield text-cyan-600 dark:text-cyan-400"></i>
+                        <span class="truncate text-slate-800 dark:text-slate-200 font-medium">${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                    </div>
+                    <div class="font-mono text-[10px] text-cyan-800 dark:text-cyan-300 bg-white dark:bg-navy-950 px-2 py-0.5 rounded border border-slate-300 dark:border-cyan-900/50 truncate max-w-xs">
+                        SHA-256: ${hash}
+                    </div>
+                `;
+                list.appendChild(item);
+            }
+        }
+
+        // -------------------------------------------------------------
+        // Form Submission & Cryptographic Sealing
+        // -------------------------------------------------------------
+        async function handleFormSubmit(event) {
+            event.preventDefault();
+
+            const vType = document.getElementById('violationType').value;
+            const division = document.getElementById('division').value;
+            const thana = document.getElementById('thanaLocation').value;
+            const date = document.getElementById('incidentDate').value;
+            const force = document.getElementById('accusedForce').value;
+            const officer = document.getElementById('officerName').value || 'অজ্ঞাতনামা কর্মকর্তা';
+            const details = document.getElementById('incidentDetails').value;
+            const phone = document.getElementById('contactPhone').value;
+            const masked = document.getElementById('maskIdentity').checked;
+            const reparation = document.getElementById('needReparation').checked;
+
+            // Generate deterministic SHA-256 payload hash
+            const rawPayload = `${vType}|${division}|${thana}|${date}|${force}|${details}|${Date.now()}`;
+            const generatedHash = await sha256(rawPayload);
+
+            // Generate Tracking ID
+            const randomCode = Math.floor(10000 + Math.random() * 90000);
+            const trackingId = `BD-IPOC-2026-${randomCode}`;
+
+            const newCase = {
+                id: trackingId,
+                victim: masked ? `ভিকটিম-${randomCode} (পরিচয় গোপনকৃত)` : `নাগরিক (${phone})`,
+                phone: phone.slice(0, 5) + '***' + phone.slice(-3),
+                division: division,
+                thana: thana,
+                type: vType,
+                accused: officer + ` (${force})`,
+                date: date.replace('T', ' '),
+                status: 'Triage In Progress',
+                triageDays: 1,
+                reparation: reparation,
+                hash: generatedHash,
+                details: details
+            };
+
+            casesDB.unshift(newCase);
+            updateTriageBadge();
+
+            // Trigger Confetti
+            confetti({
+                particleCount: 80,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+
+            const swalTheme = getSwalTheme();
+
+            // SweetAlert Success with SMS Simulation
+            Swal.fire({
+                icon: 'success',
+                title: 'অভিযোগ সফলভাবে নিবন্ধিত ও হ্যাশ সিল্ড!',
+                html: `
+                    <div class="text-left text-xs space-y-3 font-sans mt-3">
+                        <div class="bg-slate-100 dark:bg-navy-950 p-3 rounded-xl border border-slate-300 dark:border-slate-800 font-mono">
+                            <span class="text-slate-500 dark:text-slate-400 block text-[10px]">আপনার গোপন ট্র্যাকিং আইডি:</span>
+                            <span class="text-base font-bold text-cyan-600 dark:text-cyan-400 select-all">${trackingId}</span>
+                        </div>
+                        <div class="bg-slate-100 dark:bg-navy-950 p-3 rounded-xl border border-slate-300 dark:border-slate-800 font-mono">
+                            <span class="text-slate-500 dark:text-slate-400 block text-[10px]">SHA-256 ক্রিপ্টোগ্রাফিক সিল:</span>
+                            <span class="text-[11px] text-emerald-600 dark:text-emerald-400 break-all select-all">${generatedHash}</span>
+                        </div>
+                        <div class="p-2.5 rounded bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-400 dark:border-emerald-600/40 text-emerald-800 dark:text-emerald-200 text-xs">
+                            <i class="fa-solid fa-comment-sms mr-1"></i>
+                            <strong>SMS প্রেরিত:</strong> ${phone} নম্বরে ১৫ মিনিটের মধ্যে রসিদ কনফার্মেশন ও ট্র্যাকিং লিংক পাঠানো হয়েছে।
+                        </div>
+                    </div>
+                `,
+                confirmButtonText: 'ট্র্যাকিং ড্যাশবোর্ড দেখুন',
+                confirmButtonColor: '#06b6d4',
+                background: swalTheme.background,
+                color: swalTheme.color
+            }).then(() => {
+                document.getElementById('trackInput').value = trackingId;
+                trackCase();
+                document.getElementById('incidentForm').reset();
+                document.getElementById('selectedFilesContainer').classList.add('hidden');
+            });
+        }
+
+        // -------------------------------------------------------------
+        // Case Tracking Logic
+        // -------------------------------------------------------------
+        function trackCase() {
+            const query = document.getElementById('trackInput').value.trim();
+            const resultBox = document.getElementById('trackingResult');
+            const swalTheme = getSwalTheme();
+
+            if (!query) {
+                Swal.fire({ icon: 'warning', title: 'ট্র্যাকিং আইডি লিখুন', background: swalTheme.background, color: swalTheme.color });
+                return;
+            }
+
+            const found = casesDB.find(c => c.id.toLowerCase() === query.toLowerCase());
+
+            if (!found) {
+                resultBox.classList.remove('hidden');
+                resultBox.innerHTML = `
+                    <div class="text-center text-xs text-red-600 dark:text-red-400 p-2">
+                        <i class="fa-solid fa-circle-xmark text-lg mb-1 block"></i>
+                        কোনো রেকর্ড পাওয়া যায়নি। অনুগ্রহ করে সঠিক আইডি লিখুন।
+                    </div>
+                `;
+                return;
+            }
+
+            resultBox.classList.remove('hidden');
+            resultBox.innerHTML = `
+                <div class="space-y-3 text-xs">
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
+                        <span class="font-bold text-cyan-600 dark:text-cyan-400 font-mono">${found.id}</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${getStatusClass(found.status)}">
+                            ${found.status}
+                        </span>
+                    </div>
+                    <div class="space-y-1 text-slate-700 dark:text-slate-300">
+                        <p><strong>অভিযোগের ধরন:</strong> ${found.type}</p>
+                        <p><strong>ঘটনাস্থল:</strong> ${found.thana}, ${found.division}</p>
+                        <p><strong>তদন্ত দিন:</strong> ১৪ দিনের মধ্যে দিন নং ${found.triageDays}</p>
+                    </div>
+
+                    <!-- Progress Stepper -->
+                    <div class="pt-2 border-t border-slate-200 dark:border-slate-800">
+                        <span class="text-[10px] text-slate-500 dark:text-slate-400 block mb-2 font-mono">লাইভ প্রসেসিং স্টেজ:</span>
+                        <div class="flex items-center justify-between text-[10px] font-mono">
+                            <span class="text-emerald-600 dark:text-emerald-400 font-bold"><i class="fa-solid fa-circle-check"></i> ইনটেক সম্পন্ন</span>
+                            <i class="fa-solid fa-arrow-right text-slate-400"></i>
+                            <span class="${found.triageDays >= 1 ? 'text-cyan-600 dark:text-cyan-400 font-bold' : 'text-slate-400'}"><i class="fa-solid fa-spinner ${found.status === 'Triage In Progress' ? 'fa-spin' : ''}"></i> ট্রায়াজ</span>
+                            <i class="fa-solid fa-arrow-right text-slate-400"></i>
+                            <span class="${found.status.includes('Probe') || found.status.includes('Tribunal') ? 'text-amber-600 dark:text-amber-400 font-bold' : 'text-slate-400'}">ফিল্ড তদন্ত</span>
+                            <i class="fa-solid fa-arrow-right text-slate-400"></i>
+                            <span class="${found.status.includes('Tribunal') ? 'text-purple-600 dark:text-purple-400 font-bold' : 'text-slate-400'}">ট্রাইব্যুনাল</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-100 dark:bg-navy-900 p-2 rounded text-[10px] text-slate-600 dark:text-slate-400 font-mono break-all border border-slate-200 dark:border-slate-800">
+                        <span class="text-cyan-600 dark:text-cyan-400 font-bold">SHA-256 Hash:</span> ${found.hash}
+                    </div>
+                </div>
+            `;
+        }
+
+        function getStatusClass(status) {
+            if (status.includes('Tribunal')) return 'bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 border border-purple-400 dark:border-purple-600/40';
+            if (status.includes('Probe')) return 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-400 dark:border-amber-600/40';
+            if (status.includes('Dismissed')) return 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-400 border border-slate-300 dark:border-slate-700';
+            return 'bg-cyan-100 dark:bg-cyan-950 text-cyan-800 dark:text-cyan-300 border border-cyan-400 dark:border-cyan-600/40';
+        }
+
+        // -------------------------------------------------------------
+        // Cryptographic Tamper Simulator
+        // -------------------------------------------------------------
+        function simulateTamper() {
+            const currentHashDisplay = document.getElementById('current-hash-display');
+            const alertBox = document.getElementById('tamper-alert-box');
+            const statusBadge = document.getElementById('vault-status-badge');
+            const swalTheme = getSwalTheme();
+
+            // Corrupt the hash by replacing characters
+            currentHashDisplay.innerText = 'b78a994298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852ba01';
+            currentHashDisplay.className = 'bg-red-50 dark:bg-red-950 p-2 rounded text-[11px] text-red-700 dark:text-red-300 break-all border border-red-500 select-all font-mono animate-pulse';
+
+            statusBadge.innerText = 'TAMPER DETECTED: INVALID';
+            statusBadge.className = 'bg-red-100 dark:bg-red-950 text-red-800 dark:text-red-400 border border-red-400 dark:border-red-600 text-[10px] px-2 py-0.5 rounded-full font-bold';
+
+            alertBox.classList.remove('hidden');
+
+            Swal.fire({
+                icon: 'error',
+                title: 'বিকৃতি শনাক্ত হয়েছে! (Tamper Alert)',
+                text: 'সার্ভারে রক্ষিত সিসিটিভি ফাইলের ১ বাইট পরিবর্তন হওয়ায় ক্রিপ্টোগ্রাফিক হ্যাশ চেইন তাৎক্ষণিকভাবে বাতিল হয়েছে।',
+                background: swalTheme.background,
+                color: swalTheme.color,
+                confirmButtonColor: '#e63946'
+            });
+        }
+
+        function resetTamper() {
+            const originalHash = document.getElementById('original-hash-display').innerText.trim();
+            const currentHashDisplay = document.getElementById('current-hash-display');
+            const alertBox = document.getElementById('tamper-alert-box');
+            const statusBadge = document.getElementById('vault-status-badge');
+
+            currentHashDisplay.innerText = originalHash;
+            currentHashDisplay.className = 'bg-white dark:bg-navy-900 p-2 rounded text-[11px] text-emerald-700 dark:text-emerald-300 break-all border border-slate-300 dark:border-emerald-900/50 font-mono';
+
+            statusBadge.innerText = 'AUTHENTIC & UNTOUCHED';
+            statusBadge.className = 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-400 border border-emerald-400 dark:border-emerald-600/40 text-[10px] px-2 py-0.5 rounded-full font-bold';
+
+            alertBox.classList.add('hidden');
+        }
+
+        function runAllIntegrityChecks() {
+            const swalTheme = getSwalTheme();
+            Swal.fire({
+                title: 'সকল নোডে ইন্টিগ্রিটি যাচাই চলছে...',
+                html: '<span class="text-xs text-slate-500 dark:text-slate-300 font-mono">Checking 5 hashes against distributed ledger...</span>',
+                timer: 1200,
+                timerProgressBar: true,
+                didOpen: () => Swal.showLoading(),
+                background: swalTheme.background,
+                color: swalTheme.color
+            }).then(() => {
+                Swal.fire({
+                    icon: 'success',
+                    title: '১০০% ভল্ট ইন্টিগ্রিটি সুরক্ষিত',
+                    text: 'সকল প্রমাণপত্রের অরিজিনাল সিগনেচার সঠিক রয়েছে। কোনো ট্যাম্পারিং নেই।',
+                    background: swalTheme.background,
+                    color: swalTheme.color,
+                    confirmButtonColor: '#10b981'
+                });
+            });
+        }
+
+        function renderVaultTable() {
+            const tbody = document.getElementById('vaultTableBody');
+            tbody.innerHTML = '';
+
+            casesDB.forEach(c => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 dark:hover:bg-navy-800/40 transition-colors';
+                tr.innerHTML = `
+                    <td class="px-4 py-3 font-bold text-cyan-600 dark:text-cyan-400">${c.id}</td>
+                    <td class="px-4 py-3 font-sans text-slate-800 dark:text-slate-200">${c.type}</td>
+                    <td class="px-4 py-3 text-slate-500 dark:text-slate-400">14.2 MB</td>
+                    <td class="px-4 py-3 text-slate-600 dark:text-slate-400 break-all max-w-xs select-all text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">${c.hash}</td>
+                    <td class="px-4 py-3 text-slate-500 dark:text-slate-400">${c.date}</td>
+                    <td class="px-4 py-3 text-right">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-400 border border-emerald-400 dark:border-emerald-700/40">VERIFIED</span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // -------------------------------------------------------------
+        // Triage Dashboard Logic (Investigator Actions)
+        // -------------------------------------------------------------
+        function filterTriage(category) {
+            document.querySelectorAll('.triage-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-cyan-600', 'dark:bg-cyan-500', 'text-white', 'dark:text-navy-950', 'font-bold', 'shadow-sm');
+                btn.classList.add('bg-slate-200', 'dark:bg-navy-800');
+            });
+            event.target.classList.add('bg-cyan-600', 'dark:bg-cyan-500', 'text-white', 'dark:text-navy-950', 'font-bold', 'shadow-sm');
+            event.target.classList.remove('bg-slate-200', 'dark:bg-navy-800');
+
+            renderTriageCards(category);
+        }
+
+        function renderTriageCards(filter = 'all') {
+            const container = document.getElementById('triageCardsContainer');
+            container.innerHTML = '';
+
+            let filtered = casesDB;
+            if (filter === 'urgent') filtered = casesDB.filter(c => c.reparation);
+            if (filter === 'probe') filtered = casesDB.filter(c => c.status.includes('Probe'));
+            if (filter === 'vexatious') filtered = casesDB.filter(c => c.status.includes('Dismissed'));
+
+            filtered.forEach(c => {
+                const card = document.createElement('div');
+                card.className = 'bg-white dark:bg-navy-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm dark:shadow-xl space-y-4 hover:border-slate-300 dark:hover:border-slate-700 transition-colors';
+                card.innerHTML = `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200 dark:border-slate-800">
+                        <div class="flex items-center gap-3">
+                            <span class="text-sm font-bold font-mono text-cyan-600 dark:text-cyan-400">${c.id}</span>
+                            <span class="px-2.5 py-0.5 rounded text-[11px] font-bold ${getStatusClass(c.status)}">${c.status}</span>
+                            ${c.reparation ? '<span class="bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-400 dark:border-amber-600/40 text-[10px] px-2 py-0.5 rounded font-bold"><i class="fa-solid fa-kit-medical mr-1"></i>জরুরি চিকিৎসা তহবিল</span>' : ''}
+                        </div>
+                        <div class="text-xs font-mono text-slate-500 dark:text-slate-400">
+                            ১৪-দিনের ট্রায়াজ কাউন্টডাউন: <strong class="text-slate-800 dark:text-white">${c.triageDays}/১৪ দিন</strong>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                        <div>
+                            <span class="text-slate-500 dark:text-slate-400 block text-[11px]">অভিযোগকারী:</span>
+                            <strong class="text-slate-800 dark:text-slate-200">${c.victim}</strong>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 font-mono mt-0.5">যোগাযোগ: ${c.phone}</p>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 dark:text-slate-400 block text-[11px]">অভিযুক্ত পুলিশ কর্মকর্তা:</span>
+                            <strong class="text-red-700 dark:text-red-400">${c.accused}</strong>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">ঘটনাস্থল: ${c.thana}, ${c.division}</p>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 dark:text-slate-400 block text-[11px]">ঘটনার বিবরণ:</span>
+                            <p class="text-slate-600 dark:text-slate-300 text-xs line-clamp-2">${c.details}</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-200 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+                        <div class="font-mono text-[10px] text-slate-500 dark:text-slate-400 truncate max-w-sm">
+                            <i class="fa-solid fa-fingerprint text-cyan-600 dark:text-cyan-400 mr-1"></i> ${c.hash}
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="approveForProbe('${c.id}')" class="bg-slate-100 dark:bg-navy-800 hover:bg-cyan-600 hover:text-white dark:hover:bg-cyan-500 dark:hover:text-navy-950 text-slate-700 dark:text-cyan-400 px-3 py-1.5 rounded-lg font-semibold transition flex items-center gap-1.5 border border-slate-300 dark:border-transparent">
+                                <i class="fa-solid fa-magnifying-glass"></i> ফিল্ড তদন্ত আদেশ
+                            </button>
+                            <button onclick="sendToTribunal('${c.id}')" class="bg-slate-100 dark:bg-navy-800 hover:bg-purple-600 hover:text-white text-purple-700 dark:text-purple-300 px-3 py-1.5 rounded-lg font-semibold transition flex items-center gap-1.5 border border-slate-300 dark:border-transparent">
+                                <i class="fa-solid fa-gavel"></i> ট্রাইব্যুনাল চালান
+                            </button>
+                            <button onclick="dismissVexatious('${c.id}')" class="bg-slate-100 dark:bg-navy-800 hover:bg-red-100 dark:hover:bg-red-900 text-slate-600 dark:text-slate-400 hover:text-red-700 dark:hover:text-red-200 px-3 py-1.5 rounded-lg font-semibold transition flex items-center gap-1.5 border border-slate-300 dark:border-transparent">
+                                <i class="fa-solid fa-shield"></i> ভুয়া বলে খারিজ
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function approveForProbe(caseId) {
+            const c = casesDB.find(item => item.id === caseId);
+            const swalTheme = getSwalTheme();
+            if (c) {
+                c.status = 'Field Probe Active';
+                renderTriageCards();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'ফিল্ড তদন্ত আদেশ জারি!',
+                    text: `${caseId}-এর জন্য সিভিলিয়ান ইনভেস্টিগেশন ব্যুরোকে সরেজমিন তদন্তের নির্দেশ দেওয়া হয়েছে।`,
+                    background: swalTheme.background,
+                    color: swalTheme.color,
+                    confirmButtonColor: '#06b6d4'
+                });
+            }
+        }
+
+        function sendToTribunal(caseId) {
+            const c = casesDB.find(item => item.id === caseId);
+            const swalTheme = getSwalTheme();
+            if (c) {
+                c.status = 'Tribunal Indictment Filed';
+                renderTriageCards();
+
+                // Update Court Dossier Preview
+                document.getElementById('dossier-id').innerText = `IPOC/TRIBUNAL/2026/${caseId.slice(-4)}`;
+                document.getElementById('dossier-victim').innerText = c.victim;
+                document.getElementById('dossier-accused').innerText = c.accused;
+                document.getElementById('dossier-location').innerText = `${c.thana}, ${c.division} | ${c.date}`;
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'স্পেশাল ট্রাইব্যুনালে সরাসরি চালান প্রস্তুত!',
+                    text: 'CrPC 132/197 এর প্রশাসনিক বাধা ছাড়াই আনুষ্ঠানিক চার্জশিট ট্রাইব্যুনাল ট্যাবে রেন্ডার হয়েছে।',
+                    background: swalTheme.background,
+                    color: swalTheme.color,
+                    confirmButtonText: 'আদালত ডসিয়ার দেখুন',
+                    confirmButtonColor: '#06b6d4'
+                }).then(() => switchTab('dossier'));
+            }
+        }
+
+        function dismissVexatious(caseId) {
+            const c = casesDB.find(item => item.id === caseId);
+            const swalTheme = getSwalTheme();
+            if (c) {
+                c.status = 'Dismissed (Vexatious)';
+                renderTriageCards();
+                Swal.fire({
+                    icon: 'info',
+                    title: 'অভিযোগ খারিজ (সৎ কর্মকর্তার সুরক্ষা)',
+                    text: 'প্রাথমিক ট্রায়াজে উদ্দেশ্যমূলক বা ভুয়া প্রমাণ মেলায় সংশ্লিষ্ট পুলিশ কর্মকর্তাকে অব্যাহতি দিয়ে ফাইল খারিজ করা হয়েছে।',
+                    background: swalTheme.background,
+                    color: swalTheme.color,
+                    confirmButtonColor: '#f59e0b'
+                });
+            }
+        }
+
+        function updateTriageBadge() {
+            const inProgressCount = casesDB.filter(c => c.status === 'Triage In Progress').length;
+            const badge = document.getElementById('badge-triage-count');
+            if (badge) badge.innerText = inProgressCount;
+        }
+
+        // -------------------------------------------------------------
+        // Dossier Judicial Print Simulation
+        // -------------------------------------------------------------
+        function printDossier() {
+            window.print();
+        }
+
+        // -------------------------------------------------------------
+        // 2G SMS / USSD Simulation Logic
+        // -------------------------------------------------------------
+        function openSmsSimulator() {
+            document.getElementById('smsModal').classList.remove('hidden');
+        }
+
+        function closeSmsSimulator() {
+            document.getElementById('smsModal').classList.add('hidden');
+        }
+
+        function simulateSmsSend() {
+            const input = document.getElementById('smsInputCode').value.trim();
+            const screen = document.getElementById('sms-screen-text');
+
+            if (input.toUpperCase().includes('89421')) {
+                screen.innerHTML = `
+                    <span class="text-emerald-400 font-bold block mb-1">Reply from IPOC-BD:</span>
+                    "কেস নং BD-IPOC-2026-89421। স্ট্যাটাস: ফিল্ড তদন্তাধীন। তদন্ত কর্মকর্তা লকআপ পরিদর্শন করেছেন। পরবর্তী তারিখ: ৩ দিন পর।"
+                `;
+            } else {
+                screen.innerHTML = `
+                    <span class="text-amber-400 font-bold block mb-1">Reply from IPOC-BD:</span>
+                    "আপনার অনুরোধটি প্রক্রিয়াধীন। অভিযোগ দাখিল করতে লিখুন HELP অথবা নতুন তথ্যের জন্য কল করুন ৩৩৩।"
+                `;
+            }
+        }
+
+        // Initialize theme, table, and badge on load
+        window.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            renderVaultTable();
+            renderTriageCards();
+            updateTriageBadge();
+        });
+    </script>
+</body>
+</html>
